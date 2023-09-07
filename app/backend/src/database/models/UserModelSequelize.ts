@@ -1,13 +1,18 @@
 import {
-  Model,
   DataTypes,
-  InferAttributes,
+  Model,
   InferCreationAttributes,
+  InferAttributes,
   CreationOptional,
 } from 'sequelize';
 import db from '.';
 
-class UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+// Os tipos pré-definidos InferAttributes e InferCreationAttributes servem
+// para ajudar o TypeScript a inferir os tipos das colunas no banco de dados
+// e dos atributos de criação do modelo, respectivamente. Já o tipo
+// CreationOptional serve para definir um tipo opcional durante a criação do modelo.
+class UserModelSequelize extends Model<InferAttributes<UserModelSequelize>,
+InferCreationAttributes<UserModelSequelize>> {
   declare id: CreationOptional<number>;
   declare username: string;
   declare role: string;
@@ -15,7 +20,7 @@ class UserModel extends Model<InferAttributes<UserModel>, InferCreationAttribute
   declare password: string;
 }
 
-UserModel.init({
+UserModelSequelize.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -42,6 +47,7 @@ UserModel.init({
   sequelize: db,
   modelName: 'users',
   timestamps: false,
+  underscored: true,
 });
 
 // OtherModel.belongsTo(Example, { foreignKey: 'campoA', as: 'campoEstrangeiroA' });
@@ -50,4 +56,4 @@ UserModel.init({
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
 
-export default UserModel;
+export default UserModelSequelize;

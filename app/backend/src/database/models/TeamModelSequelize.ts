@@ -7,12 +7,18 @@ import {
 } from 'sequelize';
 import db from '.';
 
-class TeamModel extends Model<InferAttributes<TeamModel>, InferCreationAttributes<TeamModel>> {
+// Os tipos pré-definidos InferAttributes e InferCreationAttributes servem
+// para ajudar o TypeScript a inferir os tipos das colunas no banco de dados
+// e dos atributos de criação do modelo, respectivamente. Já o tipo
+// CreationOptional serve para definir um tipo opcional durante a criação do modelo.
+
+class TeamModelSequelize extends
+  Model<InferAttributes<TeamModelSequelize>, InferCreationAttributes<TeamModelSequelize>> {
   declare id: CreationOptional<number>;
   declare teamName: string;
 }
 
-TeamModel.init({
+TeamModelSequelize.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -36,4 +42,4 @@ TeamModel.init({
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
 
-export default TeamModel;
+export default TeamModelSequelize;

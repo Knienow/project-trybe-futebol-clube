@@ -1,16 +1,17 @@
-// import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-// class Validations {
-//   static validateTeam(req: Request, res: Response, next: NextFunction): Response | void {
-//     const team = req.body;
-//     const requiredKeys = ['team_name'];
-//     const notFoundKey = requiredKeys.find((key) => !(key in team));
-//     if (notFoundKey) {
-//       return res.status(404).json({ message: `${notFoundKey} is required` });
-//     }
+// nesta classe são implementadas todas as validações de entrada de Teams
+class Validations {
+  static validateTeam(req: Request, res: Response, next: NextFunction): Response | void {
+    const team = req.body;
+    const requiredKeys = ['team_name'];
+    const notFoundKey = requiredKeys.find((key) => !(key in team));
+    if (notFoundKey) {
+      return res.status(404).json({ message: `${notFoundKey} is required` });
+    }
 
-//     next();
-//   }
-// }
+    next();
+  }
+}
 
-// export default Validations;
+export default Validations;
