@@ -1,8 +1,8 @@
 import TeamModel from '../models/TeamModel';
-import { NewEntity } from '../Interfaces/index';
+// import { NewEntity } from '../Interfaces/index';
 import ITeam from '../Interfaces/ITeam';
 import { ITeamModel } from '../Interfaces/ITeamModel';
-import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
+import { ServiceResponse /* , ServiceMessage */ } from '../Interfaces/ServiceResponse';
 
 // atributo teamModel declarado no constructor: definindo que caso não seja
 // passado nenhum modelo durante a criação de uma instância, por padrão será
@@ -15,10 +15,10 @@ export default class TeamService {
     private teamModel: ITeamModel = new TeamModel(),
   ) { }
 
-  public async createTeam(team: NewEntity<ITeam>): Promise<ServiceResponse<ITeam>> {
-    const newBook = await this.teamModel.create(team);
-    return { status: 'SUCCESSFUL', data: newBook };
-  }
+  // public async createTeam(team: NewEntity<ITeam>): Promise<ServiceResponse<ITeam>> {
+  //   const newBook = await this.teamModel.create(team);
+  //   return { status: 'SUCCESSFUL', data: newBook };
+  // }
 
   public async getAllTeams() : Promise<ServiceResponse<ITeam[]>> {
     const teams = await this.teamModel.findAll();
@@ -31,23 +31,23 @@ export default class TeamService {
     return { status: 'SUCCESSFUL', data: team };
   }
 
-  public async updateTeam(id: number, team: ITeam): Promise<ServiceResponse<ServiceMessage>> {
-    const teamFound = await this.teamModel.findById(id);
-    if (!teamFound) return { status: 'NOT_FOUND', data: { message: `Team ${id} not found` } };
+  // public async updateTeam(id: number, team: ITeam): Promise<ServiceResponse<ServiceMessage>> {
+  //   const teamFound = await this.teamModel.findById(id);
+  //   if (!teamFound) return { status: 'NOT_FOUND', data: { message: `Team ${id} not found` } };
 
-    const updatedTeam = await this.teamModel.update(id, team);
-    if (!updatedTeam) {
-      return { status: 'CONFLICT',
-        data: { message: `There are no updates to perform in Team ${id}` } };
-    }
-    return { status: 'SUCCESSFUL', data: { message: 'Team updated' } };
-  }
+  //   const updatedTeam = await this.teamModel.update(id, team);
+  //   if (!updatedTeam) {
+  //     return { status: 'CONFLICT',
+  //       data: { message: `There are no updates to perform in Team ${id}` } };
+  //   }
+  //   return { status: 'SUCCESSFUL', data: { message: 'Team updated' } };
+  // }
 
-  public async deleteTeam(id: number): Promise<ServiceResponse<ServiceMessage>> {
-    const teamFound = await this.teamModel.findById(id);
-    if (!teamFound) return { status: 'NOT_FOUND', data: { message: `Team ${id} not found` } };
+  // public async deleteTeam(id: number): Promise<ServiceResponse<ServiceMessage>> {
+  //   const teamFound = await this.teamModel.findById(id);
+  //   if (!teamFound) return { status: 'NOT_FOUND', data: { message: `Team ${id} not found` } };
 
-    await this.teamModel.delete(id);
-    return { status: 'SUCCESSFUL', data: { message: 'Team deleted' } };
-  }
+  //   await this.teamModel.delete(id);
+  //   return { status: 'SUCCESSFUL', data: { message: 'Team deleted' } };
+  // }
 }

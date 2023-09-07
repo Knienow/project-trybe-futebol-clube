@@ -4,12 +4,12 @@
 // criado no banco de dados - para adicionar novos times ao campeonato
 
 import ITeam from './ITeam';
-import { NewEntity } from '.';
+// import { NewEntity } from '.';
 
 export interface ITeamModel {
-  create(data: Partial<ITeam>) : Promise<ITeam>,
+  // create(data: Partial<ITeam>) : Promise<ITeam>,
   findAll(): Promise<ITeam[]>,
   findById(id: ITeam['id']): Promise<ITeam | null>,
-  update(id: ITeam['id'], data: Partial<NewEntity<ITeam>>) : Promise<ITeam | null>,
-  delete(id: ITeam['id']): Promise<number>,
+  // update(id: ITeam['id'], data: Partial<NewEntity<ITeam>>) : Promise<ITeam | null>,
+  // delete(id: ITeam['id']): Promise<number>,
 }

@@ -1,7 +1,7 @@
 import TeamModelSequelize from '../database/models/TeamModelSequelize';
 import ITeam from '../Interfaces/ITeam';
 import { ITeamModel } from '../Interfaces/ITeamModel';
-import { NewEntity } from '../Interfaces';
+// import { NewEntity } from '../Interfaces';
 
 export default class TeamModel implements ITeamModel {
   private model = TeamModelSequelize;
@@ -20,20 +20,20 @@ export default class TeamModel implements ITeamModel {
     ));
   }
 
-  async create(data: NewEntity<ITeam>): Promise<ITeam> {
-    const dbData = await this.model.create(data);
-    const { id, teamName }: ITeam = dbData;
-    return { id, teamName };
-  }
+  // async create(data: NewEntity<ITeam>): Promise<ITeam> {
+  //   const dbData = await this.model.create(data);
+  //   const { id, teamName }: ITeam = dbData;
+  //   return { id, teamName };
+  // }
 
-  async update(id: ITeam['id'], data: Partial<NewEntity<ITeam>>): Promise<ITeam | null> {
-    const [affectedRows] = await this.model.update(data, { where: { id } });
-    if (affectedRows === 0) return null;
+  // async update(id: ITeam['id'], data: Partial<NewEntity<ITeam>>): Promise<ITeam | null> {
+  //   const [affectedRows] = await this.model.update(data, { where: { id } });
+  //   if (affectedRows === 0) return null;
 
-    return this.findById(id);
-  }
+  //   return this.findById(id);
+  // }
 
-  async delete(id: ITeam['id']): Promise<number> {
-    return this.model.destroy({ where: { id } });
-  }
+  // async delete(id: ITeam['id']): Promise<number> {
+  //   return this.model.destroy({ where: { id } });
+  // }
 }

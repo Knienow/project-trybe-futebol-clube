@@ -13,7 +13,7 @@ export default class UserController {
   }
 
   public async getUserById(req: Request, res: Response): Promise<Response> {
-    const serviceResponse = await this.userService.findById(Number(req.params.id));
+    const serviceResponse = await this.userService.getUserById(Number(req.params.id));
 
     if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
@@ -31,12 +31,12 @@ export default class UserController {
     return res.status(200).json(serviceResponse.data);
   }
 
-  public async createUser(req: Request, res: Response): Promise<Response> {
-    const serviceResponse = await this.userService.createUser(req.body);
-    if (serviceResponse.status !== 'SUCCESSFUL') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
-    }
+  // public async createUser(req: Request, res: Response): Promise<Response> {
+  //   const serviceResponse = await this.userService.createUser(req.body);
+  //   if (serviceResponse.status !== 'SUCCESSFUL') {
+  //     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+  //   }
 
-    return res.status(201).json(serviceResponse.data);
-  }
+  //   return res.status(201).json(serviceResponse.data);
+  // }
 }
