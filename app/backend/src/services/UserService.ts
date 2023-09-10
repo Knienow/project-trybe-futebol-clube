@@ -43,6 +43,10 @@ export default class UserService {
     return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
   }
 
+  // public async validateToken(token: string | undefined) : Promise<ServiceResponse<IToken>> {
+
+  // }
+
   // public async createUser(user: NewEntity<IUser>):
   // Promise<ServiceResponse<IUserResponse | ServiceMessage>> {
   //   const userFound = await this.userModel.findByEmail(user.email);
