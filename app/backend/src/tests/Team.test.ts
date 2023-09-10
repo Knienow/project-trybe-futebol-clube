@@ -1,5 +1,3 @@
-// tests/integration/Book.test.ts
-
 import * as sinon from 'sinon';
 import * as chai from 'chai';
 

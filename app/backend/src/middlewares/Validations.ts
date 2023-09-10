@@ -32,7 +32,7 @@ class Validations {
 
   static validateUser(req: Request, res: Response, next: NextFunction): Response | void {
     const user = req.body;
-    const requiredKeys = ['email', 'password', 'name'];
+    const requiredKeys = ['email', 'password', 'username'];
     const notFoundKey = requiredKeys.find((key) => !(key in user));
     if (notFoundKey) {
       return res.status(400).json({ message: 'All fields must be filled' });

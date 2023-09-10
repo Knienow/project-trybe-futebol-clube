@@ -16,8 +16,8 @@ export default class TeamService {
   ) { }
 
   // public async createTeam(team: NewEntity<ITeam>): Promise<ServiceResponse<ITeam>> {
-  //   const newBook = await this.teamModel.create(team);
-  //   return { status: 'SUCCESSFUL', data: newBook };
+  //   const newTeam = await this.teamModel.create(team);
+  //   return { status: 'SUCCESSFUL', data: newTeam };
   // }
 
   public async getAllTeams() : Promise<ServiceResponse<ITeam[]>> {
