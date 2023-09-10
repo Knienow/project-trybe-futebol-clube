@@ -34,13 +34,13 @@ export default class UserService {
     const user = await this.userModel.findByEmail(data.email);
     if (user) {
       if (!bcrypt.compareSync(data.password, user.password)) {
-        return { status: 'INVALID_DATA', data: { message: 'Invalid email or password' } };
+        return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
       }
       const { email } = user as IUser;
       const token = this.jwtService.sign({ email });
       return { status: 'SUCCESSFUL', data: { token } };
     }
-    return { status: 'NOT_FOUND', data: { message: 'User not found' } };
+    return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
   }
 
   // public async createUser(user: NewEntity<IUser>):
