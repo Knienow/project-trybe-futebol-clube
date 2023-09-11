@@ -10,7 +10,7 @@ router.post('/', Validations.validateLogin, (req, res) => userController.login(r
 router.get(
   '/role',
   Validations.validateToken,
-  (req, res) => userController.login(req, res),
+  (req, res) => userController.tokenValidate(req, res),
 );
 // router.get('/', (req, res) => userController.getAllUsers(req, res));
 

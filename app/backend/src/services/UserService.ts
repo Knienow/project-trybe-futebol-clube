@@ -7,11 +7,13 @@ import { IToken } from '../Interfaces/IToken';
 import JWT from '../utils/JWT';
 // import { NewEntity } from '../Interfaces';
 import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
+// import UserModelSequelize from '../database/models/UserModelSequelize';
 
 export default class UserService {
   constructor(
     private userModel: IUserModel = new UserModel(),
     private jwtService = JWT,
+    // private sequelizeModel = UserModelSequelize,
   ) { }
 
   public async findAll(): Promise<ServiceResponse<IUserResponse[]>> {
@@ -43,9 +45,10 @@ export default class UserService {
     return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
   }
 
-  // public async validateToken(token: string | undefined) : Promise<ServiceResponse<IToken>> {
-
-  // }
+  public async tokenValidate(email: string): Promise<string | undefined> {
+    const user = await this.userModel.findByEmail(email);
+    return user?.role;
+  }
 
   // public async createUser(user: NewEntity<IUser>):
   // Promise<ServiceResponse<IUserResponse | ServiceMessage>> {

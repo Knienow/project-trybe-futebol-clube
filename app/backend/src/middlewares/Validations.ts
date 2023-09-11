@@ -18,29 +18,38 @@ class Validations {
     next();
   }
 
-  static async validateToken(req: Request, res: Response, next: NextFunction):
-  Promise<Response | void> {
-    const token = req.headers.authorization;
-    if (!token) {
+  static validateToken(req: Request, res: Response, next: NextFunction) {
+    const { authorization } = req.headers;
+    if (!authorization) {
       return res.status(401).json({ message: 'Token not found' });
     }
-    const validToken = await JWT.verify(token);
-    if (validToken === 'Token must be a valid token') {
-      return res.status(401).json({ message: validToken });
-    }
-    next();
-  }
-
-  static validateUser(req: Request, res: Response, next: NextFunction): Response | void {
-    const user = req.body;
-    const requiredKeys = ['email', 'password', 'username'];
-    const notFoundKey = requiredKeys.find((key) => !(key in user));
-    if (notFoundKey) {
-      return res.status(400).json({ message: 'All fields must be filled' });
+    try {
+      const bearer = authorization.replace('Bearer ', '');
+      const decoded = JWT.verify(bearer);
+      console.log('teste middleware', decoded);
+      req.body.user = decoded;
+      next();
+    } catch (error) {
+      return res.status(401).json({ message: 'Token must be a valid token' });
     }
 
-    next();
+    // const validToken = await JWT.verify(token);
+    // if (validToken === 'Token must be a valid token') {
+    //   return res.status(401).json({ message: validToken });
+    // }
+    // next();
   }
+
+  // static validateUser(req: Request, res: Response, next: NextFunction): Response | void {
+  //   const user = req.body;
+  //   const requiredKeys = ['email', 'password', 'username'];
+  //   const notFoundKey = requiredKeys.find((key) => !(key in user));
+  //   if (notFoundKey) {
+  //     return res.status(400).json({ message: 'All fields must be filled' });
+  //   }
+
+  //   next();
+  // }
 }
 
 export default Validations;

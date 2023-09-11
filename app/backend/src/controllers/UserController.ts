@@ -31,6 +31,15 @@ export default class UserController {
     return res.status(200).json(serviceResponse.data);
   }
 
+  public async tokenValidate(req: Request, res: Response): Promise<Response> {
+    const { email } = req.body.user;
+    console.log('teste email', email);
+
+    const role: string | undefined = await this.userService.tokenValidate(email);
+    console.log('teste role controller', role);
+    return res.status(200).json({ role });
+  }
+
   // public async createUser(req: Request, res: Response): Promise<Response> {
   //   const serviceResponse = await this.userService.createUser(req.body);
   //   if (serviceResponse.status !== 'SUCCESSFUL') {
