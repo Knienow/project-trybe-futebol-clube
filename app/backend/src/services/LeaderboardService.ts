@@ -1,11 +1,13 @@
 import ILeaderboard from '../Interfaces/ILeaderboard';
-import TeamModel from '../models/TeamModel';
-import { ITeamModel } from '../Interfaces/ITeamModel';
+// import TeamModel from '../models/TeamModel';
+// import { ITeamModel } from '../Interfaces/ITeamModel';
 import HomeLeaderboardService from './HomeLeaderboardService';
 import AwayLeaderboardService from './AwayLeaderboardService';
+import TeamModelSequelize from '../database/models/TeamModelSequelize';
 
 export default class LeaderboardService {
-  private teamModel: ITeamModel = new TeamModel();
+  // private teamModel: ITeamModel = new TeamModel();
+  private teamModel = TeamModelSequelize;
 
   constructor(
     private _homeLeaderboard = new HomeLeaderboardService(),

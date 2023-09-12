@@ -1,7 +1,7 @@
-import { ITeamModel } from '../Interfaces/ITeamModel';
-import { IMatchModel } from '../Interfaces/IMatchModel';
-import MatchModel from '../models/MatchModel';
-import TeamModel from '../models/TeamModel';
+// import { ITeamModel } from '../Interfaces/ITeamModel';
+// import { IMatchModel } from '../Interfaces/IMatchModel';
+// import MatchModel from '../models/MatchModel';
+// import TeamModel from '../models/TeamModel';
 import ILeaderboard from '../Interfaces/ILeaderboard';
 import TeamModelSequelize from '../database/models/TeamModelSequelize';
 import MatchModelSequelize from '../database/models/MatchModelSequelize';
@@ -10,8 +10,8 @@ import MatchModelSequelize from '../database/models/MatchModelSequelize';
 
 export default class HomeLeaderboardService {
   constructor(
-    private _teamModel: ITeamModel = new TeamModel(),
-    private matchModel: IMatchModel = new MatchModel(),
+    // private _teamModel: ITeamModel = new TeamModel(),
+    // private matchModel: IMatchModel = new MatchModel(),
     private teamModel = TeamModelSequelize,
     private model = MatchModelSequelize,
   ) {}
