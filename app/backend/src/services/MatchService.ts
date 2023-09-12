@@ -13,4 +13,10 @@ export default class MatchService {
     const matches = await this.matchModel.findAll();
     return { status: 'SUCCESSFUL', data: matches };
   }
+
+  public async getInProgress(inProgress: boolean) : Promise<ServiceResponse<IMatch[]>> {
+    const matches = await this.matchModel.filterInProgress(inProgress);
+    console.log('teste service', inProgress);
+    return { status: 'SUCCESSFUL', data: matches };
+  }
 }

@@ -22,6 +22,22 @@ export default class MatchModel implements IMatchModel {
     // ));
   }
 
+  async filterInProgress(inProgress: boolean): Promise<IMatch[]> {
+    const dbData = await this.model.findAll({
+      where: { inProgress },
+      include: [
+        { model: TeamModelSequelize, as: 'homeTeam', attributes: { exclude: ['id'] } },
+        { model: TeamModelSequelize, as: 'awayTeam', attributes: { exclude: ['id'] } },
+      ],
+    });
+    return dbData;
+    // return dbData.map((
+    //   { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress },
+    // ) => (
+    //   { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress }
+    // ));
+  }
+
   async finishMatch(id: number) {
     await this.model.update({ inProgress: false }, { where: { id } });
   }
