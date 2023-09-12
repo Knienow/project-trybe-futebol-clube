@@ -23,7 +23,6 @@ export default class HomeLeaderboardService {
 
   public async getAllFinishedMatches() {
     const matches = await this.model.findAll({ where: { inProgress: false } });
-    console.log('teste finished matches', matches);
     return matches;
   }
 
@@ -78,7 +77,6 @@ export default class HomeLeaderboardService {
     const victories = await this.getVictoriesHome();
     const drawsPoints = await this.getDrawsHome();
     const totalPoints = victories.map((victory, index) => (victory * 3) + drawsPoints[index]);
-    console.log('teste total points', totalPoints);
     return totalPoints;
   }
 

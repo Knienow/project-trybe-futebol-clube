@@ -3,13 +3,17 @@ import { IMatchModel } from '../Interfaces/IMatchModel';
 import MatchModel from '../models/MatchModel';
 import TeamModel from '../models/TeamModel';
 import ILeaderboard from '../Interfaces/ILeaderboard';
+import TeamModelSequelize from '../database/models/TeamModelSequelize';
+import MatchModelSequelize from '../database/models/MatchModelSequelize';
 // import IMatch from '../Interfaces/IMatch';
 // import ITeam from '../Interfaces/ITeam';
 
 export default class AwayLeaderboardService {
   constructor(
-    private teamModel: ITeamModel = new TeamModel(),
-    private matchModel: IMatchModel = new MatchModel(),
+    private _teamModel: ITeamModel = new TeamModel(),
+    private _matchModel: IMatchModel = new MatchModel(),
+    private teamModel = TeamModelSequelize,
+    private model = MatchModelSequelize,
   ) {}
 
   public async getAllTeams() {
@@ -18,7 +22,7 @@ export default class AwayLeaderboardService {
   }
 
   public async getAllFinishedMatches() {
-    const matches = await this.matchModel.findAll({ where: { inProgress: false } });
+    const matches = await this.model.findAll({ where: { inProgress: false } });
     return matches;
   }
 
