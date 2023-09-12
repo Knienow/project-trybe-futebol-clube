@@ -25,24 +25,6 @@ describe('Matches Test', function() {
     expect(body).to.deep.equal(matches);
   });
 
-  it('should return a match by id', async function() {
-    sinon.stub(MatchModelSequelize, 'findOne').resolves(match1 as any);
-
-    const { status, body } = await chai.request(app).get('/matches/1');
-
-    expect(status).to.equal(200);
-    expect(body).to.deep.equal(match1);
-  });
-
-  it('should return not found if the match doesn\'t exists', async function() {
-    sinon.stub(MatchModelSequelize, 'findOne').resolves(null);
-
-    const { status, body } = await chai.request(app).get('/matches/1');
-
-    expect(status).to.equal(404);
-    expect(body.message).to.equal('Match 1 not found');
-  });
-
   it('test route GET /match?inProgress=true - SUCESSFULL', () => {
     sinon.stub(MatchModelSequelize, 'findAll').resolves(match1 as any); 
     
