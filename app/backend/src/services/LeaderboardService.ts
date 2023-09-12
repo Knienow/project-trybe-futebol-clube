@@ -39,7 +39,7 @@ export default class LeaderboardService {
         goalsOwn: acc.goalsOwn + record.goalsOwn,
         goalsBalance: acc.goalsBalance + record.goalsBalance,
         efficiency: (((acc.totalPoints + record.totalPoints)
-        / ((acc.totalGames + record.totalGames) * 3)) * 100).toFixed(2) as unknown as number,
+        / ((acc.totalGames + record.totalGames) * 3)) * 100).toFixed(2) as unknown as string,
       }));
     });
     return concatLeaderboards;

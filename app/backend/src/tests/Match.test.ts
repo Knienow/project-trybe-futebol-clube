@@ -16,28 +16,6 @@ const { app } = new App();
 const { expect } = chai;
 
 describe('Matches Test', function() {
-  // it('should create a team', async function() {
-  //   sinon.stub(TeamModelSequelize, 'create').resolves(team1 as any);
-  //   sinon.stub(Validations, 'validateTeam').returns();
-
-  //   const { id, ...sendData } = team1;
-
-  //   const { status, body } = await chai.request(app).post('/teams')
-  //     .send(sendData);
-
-  //   expect(status).to.equal(201);
-  //   expect(body).to.deep.equal(team1);
-  // });
-
-  // it('shouldn\'t create a team with invalid body data', async function() {
-  //   const { status, body } = await chai.request(app).post('/teams')
-  //     .send({});
-
-  //   expect(status).to.equal(400);
-  //   expect(body.message).to.equal('teamName is required');
-  // });
-  // afterEach(sinon.restore);
-
   it('should return all matches', async function() {
     sinon.stub(MatchModelSequelize, 'findAll').resolves(matches as any);
 
@@ -63,6 +41,18 @@ describe('Matches Test', function() {
 
     expect(status).to.equal(404);
     expect(body.message).to.equal('Match 1 not found');
+  });
+
+  it('test route GET /match?inProgress=true - SUCESSFULL', () => {
+    sinon.stub(MatchModelSequelize, 'findAll').resolves(match1 as any); 
+    
+      it('should return a list of one match with a 200 status code', async () => {
+        const response = await chai.request(app).get('/matches?inProgress=true');
+
+        expect(response.body).to.be.an('array');
+        expect(response.body.length).to.be.equal(1);
+        expect(response.status).to.be.equal(200);
+      });
   });
 
   // it('should update a team', async function () {
@@ -102,28 +92,5 @@ describe('Matches Test', function() {
 
   //   expect(status).to.equal(409);
   //   expect(body.message).to.equal('There are no updates to perform in Team 1');
-  // });
-
-  // it('should delete a team', async function() {
-  //   sinon.stub(TeamModelSequelize, 'destroy').resolves();
-  //   sinon.stub(TeamModelSequelize, 'findByPk').resolves(team1 as any);
-
-  //   const { status, body } = await chai
-  //     .request(app)
-  //     .delete('/teams/1');
-
-  //   expect(status).to.equal(200);
-  //   expect(body.message).to.equal('Team deleted');
-  // });
-
-  // it('should return not found when the team to delete does not exists', async function() {
-  //   sinon.stub(TeamModelSequelize, 'findByPk').resolves(null);
-
-  //   const { status, body } = await chai
-  //     .request(app)
-  //     .delete('/teams/1')
-
-  //   expect(status).to.equal(404);
-  //   expect(body.message).to.equal('Team 1 not found');
   // });
 });
