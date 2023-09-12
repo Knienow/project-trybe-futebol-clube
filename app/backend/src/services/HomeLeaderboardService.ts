@@ -152,8 +152,7 @@ export default class HomeLeaderboardService {
     const homeLeaderboard = unsortedHomeLeaderboard.sort((a, b) => b.totalPoints - a.totalPoints
       || b.totalVictories - a.totalVictories
       || b.goalsBalance - a.goalsBalance
-      || b.goalsFavor - a.goalsFavor
-      || b.goalsOwn - a.goalsOwn);
+      || b.goalsFavor - a.goalsFavor);
     return homeLeaderboard as unknown as ILeaderboard[];
   }
 }
