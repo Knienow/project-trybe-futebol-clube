@@ -1,4 +1,3 @@
-import { Op } from 'sequelize';// import { NewEntity } from '../Interfaces';
 import MatchModelSequelize from '../database/models/MatchModelSequelize';
 import IMatch from '../Interfaces/IMatch';
 import { IMatchModel } from '../Interfaces/IMatchModel';
@@ -46,18 +45,12 @@ export default class MatchModel implements IMatchModel {
     await this.model.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
   }
 
-  async create(
+  async createMatch(
     homeTeamId: number,
     awayTeamId: number,
     homeTeamGoals: number,
     awayTeamGoals: number,
   ): Promise<IMatch> {
-    const matchAlreadyExist = await TeamModelSequelize.findAll({
-      where: { id: { [Op.or]: [homeTeamId, awayTeamId] } } });
-    if (matchAlreadyExist.length < 2) {
-      throw new Error(/* 404 */ 'There is no team with such id!');
-    }
-
     const result = await this.model.create({
       homeTeamId,
       homeTeamGoals,

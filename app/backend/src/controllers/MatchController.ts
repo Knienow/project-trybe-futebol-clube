@@ -40,4 +40,21 @@ export default class MatchController {
 
     res.status(200).json({ message: 'result updated' });
   }
+
+  public async createMatch(req: Request, res: Response) {
+    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
+    const serviceResponse = await this.matchService.createMatch(
+      homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals,
+    );
+
+    if (homeTeamId === awayTeamId) {
+      return res.status(422).json(
+        { message: 'It is not possible to create a match with two equal teams' },
+      );
+    }
+    return res.status(201).json(serviceResponse.data);
+  }
 }

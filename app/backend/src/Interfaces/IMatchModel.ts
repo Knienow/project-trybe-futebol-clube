@@ -5,7 +5,7 @@ import IMatch from './IMatch';
 
 export interface IMatchModel {
   // o método create recebe os dados e
-  create(homeTeamId: number,
+  createMatch(homeTeamId: number,
     awayTeamId: number,
     homeTeamGoals: number,
     awayTeamGoals: number): Promise<IMatch>,
