@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import MatchService from '../services/MatchService';
+import TeamModel from '../models/TeamModel';
 // import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class MatchController {
@@ -54,6 +55,13 @@ export default class MatchController {
       return res.status(422).json(
         { message: 'It is not possible to create a match with two equal teams' },
       );
+    }
+
+    const findHomeTeamById = await new TeamModel().findById(homeTeamId);
+    const findAwayTeamById = await new TeamModel().findById(awayTeamId);
+
+    if (!findHomeTeamById || !findAwayTeamById) {
+      return res.status(404).json({ message: 'There is no team with such id!' });
     }
     return res.status(201).json(serviceResponse.data);
   }
