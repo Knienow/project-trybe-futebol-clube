@@ -11,7 +11,7 @@ export default class LeaderboardController {
   ) {}
 
   public async findLeaderboard(req: Request, res: Response) {
-    const leaderboard = await this._leaderboardService.getSortedLeaderboard();
+    const leaderboard = await this._leaderboardService.sortedLeaderboard();
     res.status(200).json(leaderboard);
   }
 

@@ -17,7 +17,7 @@ export default class LeaderboardService {
     return teams;
   }
 
-  public async getFlatLeaderboards() {
+  public async flatLeaderboards() {
     const homeLeaderboard = await this._homeLeaderboard.getHomeLeaderboard();
     const awayLeaderboard = await this._awayLeaderboard.getAwayLeaderboard();
     const flatLeaderboards = [homeLeaderboard, awayLeaderboard].flat();
@@ -25,7 +25,7 @@ export default class LeaderboardService {
   }
 
   public async joinLeaderboards() {
-    const flatLeaderboards = await this.getFlatLeaderboards();
+    const flatLeaderboards = await this.flatLeaderboards();
     const concatLeaderboards = (await this.getTeams()).map((team) => team.teamName).map((team) => {
       const teamRecords = flatLeaderboards.filter((record) => record.name === team);
       return teamRecords.reduce((acc, record) => ({
@@ -45,7 +45,7 @@ export default class LeaderboardService {
     return concatLeaderboards;
   }
 
-  public async getSortedLeaderboard(): Promise<ILeaderboard[]> {
+  public async sortedLeaderboard(): Promise<ILeaderboard[]> {
     const concatLeaderboards = await this.joinLeaderboards();
     const sortedLeaderboard = concatLeaderboards.sort((a, b) => b.totalPoints - a.totalPoints
     || b.totalVictories - a.totalVictories
