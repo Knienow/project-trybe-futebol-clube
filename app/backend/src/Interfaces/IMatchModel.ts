@@ -11,6 +11,6 @@ export interface IMatchModel {
     awayTeamGoals: number): Promise<IMatch>,
   findAll(data: Partial<object | void>): Promise<IMatch[]>,
   filterInProgress(inProgress: boolean): Promise<IMatch[]>,
-  finishMatch(id: number): void,
+  finishMatch(id: number): Promise<void>,
   updateMatch(id: number, homeTeamGoals: number, awayTeamGoals: number) : void,
 }

@@ -19,4 +19,9 @@ export default class MatchService {
     console.log('teste service', inProgress);
     return { status: 'SUCCESSFUL', data: matches };
   }
+
+  public async finishMatch(id: number) : Promise<ServiceResponse<{ message: 'Finished' }>> {
+    await this.matchModel.finishMatch(id);
+    return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
 }
