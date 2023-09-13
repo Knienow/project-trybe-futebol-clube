@@ -10,25 +10,25 @@ export default class LeaderboardService {
   private teamModel = TeamModelSequelize;
 
   constructor(
-    private _homeLeaderboard = new HomeLeaderboardService(),
-    private _awayLeaderboard = new AwayLeaderboardService(),
+    private homeLeaderboard = new HomeLeaderboardService(),
+    private awayLeaderboard = new AwayLeaderboardService(),
   ) { }
 
-  public async getTeams() {
+  public async findTeams() {
     const teams = await this.teamModel.findAll();
     return teams;
   }
 
   public async flatLeaderboards() {
-    const homeLeaderboard = await this._homeLeaderboard.getHomeLeaderboard();
-    const awayLeaderboard = await this._awayLeaderboard.getAwayLeaderboard();
+    const homeLeaderboard = await this.homeLeaderboard.findHomeLeaderboard();
+    const awayLeaderboard = await this.awayLeaderboard.findAwayLeaderboard();
     const flatLeaderboards = [homeLeaderboard, awayLeaderboard].flat();
     return flatLeaderboards;
   }
 
-  public async joinLeaderboards() {
+  public async leaderboards() {
     const flatLeaderboards = await this.flatLeaderboards();
-    const concatLeaderboards = (await this.getTeams()).map((team) => team.teamName).map((team) => {
+    const concatLeaderboards = (await this.findTeams()).map((team) => team.teamName).map((team) => {
       const teamRecords = flatLeaderboards.filter((record) => record.name === team);
       return teamRecords.reduce((acc, record) => ({
         name: record.name,
@@ -47,13 +47,13 @@ export default class LeaderboardService {
     return concatLeaderboards;
   }
 
-  public async sortedLeaderboard(): Promise<ILeaderboard[]> {
-    const concatLeaderboards = await this.joinLeaderboards();
-    const sortedLeaderboard = concatLeaderboards.sort((a, b) => b.totalPoints - a.totalPoints
+  public async leaderboard(): Promise<ILeaderboard[]> {
+    const concatLeaderboards = await this.leaderboards();
+    const leaderboard = concatLeaderboards.sort((a, b) => b.totalPoints - a.totalPoints
     || b.totalVictories - a.totalVictories
     || b.goalsBalance - a.goalsBalance
     || b.goalsFavor - a.goalsFavor
     || b.goalsOwn - a.goalsOwn);
-    return sortedLeaderboard as ILeaderboard[];
+    return leaderboard as ILeaderboard[];
   }
 }

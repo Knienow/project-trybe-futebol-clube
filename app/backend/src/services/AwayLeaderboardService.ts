@@ -10,19 +10,19 @@ export default class AwayLeaderboardService {
     private model = MatchModelSequelize,
   ) {}
 
-  public async getAllTeams() {
+  public async findAllTeams() {
     const teams = await this.teamModel.findAll();
     return teams;
   }
 
-  public async getAllFinishedMatches() {
+  public async findAllFinishedMatches() {
     const matches = await this.model.findAll({ where: { inProgress: false } });
     return matches;
   }
 
-  public async getMatchesAway() {
-    const teams = await this.getAllTeams();
-    const matches = await this.getAllFinishedMatches();
+  public async findMatchesAway() {
+    const teams = await this.findAllTeams();
+    const matches = await this.findAllFinishedMatches();
     const teamsHomeMatches = teams.map((team) => {
       const awayMatches = matches.filter((match) => match.homeTeamId === team.id);
       return awayMatches;
@@ -30,14 +30,14 @@ export default class AwayLeaderboardService {
     return teamsHomeMatches;
   }
 
-  public async getTotalGamesAway() {
-    const awayMatches = await this.getMatchesAway();
+  public async findTotalGamesAway() {
+    const awayMatches = await this.findMatchesAway();
     const totalHomeGames = awayMatches.map((match) => match.length);
     return totalHomeGames;
   }
 
-  public async getVictoriesAway() {
-    const awayMatches = await this.getMatchesAway();
+  public async findVictoriesAway() {
+    const awayMatches = await this.findMatchesAway();
     const victories = awayMatches.map((match) => {
       const victory = match.filter((game) => game.awayTeamGoals > game.homeTeamGoals);
       return victory.length;
@@ -45,8 +45,8 @@ export default class AwayLeaderboardService {
     return victories;
   }
 
-  public async getDrawsAway() {
-    const awayMatches = await this.getMatchesAway();
+  public async findDrawsAway() {
+    const awayMatches = await this.findMatchesAway();
     const draws = awayMatches.map((match) => {
       const draw = match.filter((game) => game.awayTeamGoals === game.homeTeamGoals);
       return draw.length;
@@ -54,8 +54,8 @@ export default class AwayLeaderboardService {
     return draws;
   }
 
-  public async getLossesAway() {
-    const awayMatches = await this.getMatchesAway();
+  public async findLossesAway() {
+    const awayMatches = await this.findMatchesAway();
     const losses = awayMatches.map((match) => {
       const loss = match.filter((game) => game.awayTeamGoals < game.homeTeamGoals);
       return loss.length;
@@ -63,15 +63,15 @@ export default class AwayLeaderboardService {
     return losses;
   }
 
-  public async getTotalPointsAway() {
-    const victories = await this.getVictoriesAway();
-    const drawsPoints = await this.getDrawsAway();
+  public async findTotalPointsAway() {
+    const victories = await this.findVictoriesAway();
+    const drawsPoints = await this.findDrawsAway();
     const totalPoints = victories.map((victory, index) => (victory * 3) + drawsPoints[index]);
     return totalPoints;
   }
 
-  public async getGoalsFavorAway() {
-    const awayMatches = await this.getMatchesAway();
+  public async findGoalsFavorAway() {
+    const awayMatches = await this.findMatchesAway();
     const goalsFavor = awayMatches.map((match) => {
       const goals = match.map((game) => game.awayTeamGoals);
       const sum = goals.reduce((a, b) => a + b, 0);
@@ -80,8 +80,8 @@ export default class AwayLeaderboardService {
     return goalsFavor;
   }
 
-  public async getGoalsOwnAway() {
-    const awayMatches = await this.getMatchesAway();
+  public async findGoalsOwnAway() {
+    const awayMatches = await this.findMatchesAway();
     const goalsOwn = awayMatches.map((match) => {
       const goals = match.map((game) => game.homeTeamGoals);
       const sum = goals.reduce((a, b) => a + b, 0);
@@ -93,9 +93,9 @@ export default class AwayLeaderboardService {
   // Para calcular Saldo de Gols use a seguinte fórmula: GP - GC, onde:
   // GP: Gols marcados a favor;
   // GC: Gols sofridos.
-  public async getGoalsBalanceAway() {
-    const goalsFavor = await this.getGoalsFavorAway();
-    const goalsOwn = await this.getGoalsOwnAway();
+  public async findGoalsBalanceAway() {
+    const goalsFavor = await this.findGoalsFavorAway();
+    const goalsOwn = await this.findGoalsOwnAway();
     const goalsBalance = goalsFavor.map((goal, index) => goal - goalsOwn[index]);
     return goalsBalance;
   }
@@ -104,32 +104,32 @@ export default class AwayLeaderboardService {
   // P: Total de Pontos;
   // J: Total de Jogos.
   // Obs.: O seu resultado deverá ser limitado a duas casas decimais.
-  public async getEfficiencyAway() {
-    const totalPoints = await this.getTotalPointsAway();
-    const totalAwayGames = await this.getTotalGamesAway();
+  public async findEfficiencyAway() {
+    const totalPoints = await this.findTotalPointsAway();
+    const totalAwayGames = await this.findTotalGamesAway();
     const efficiency = totalPoints
       .map((point, index) => ((point / (totalAwayGames[index] * 3)) * 100));
     return efficiency;
   }
 
-  public async getUnsortedLeaderboardAway() {
-    const teams = await this.getAllTeams();
+  public async findLeaderboardAwayUnsorted() {
+    const teams = await this.findAllTeams();
 
-    const awayLeaderboard = await Promise.all(
+    const leaderboard = await Promise.all(
       teams.map(async (team, index) => ({
         name: team.teamName,
-        totalPoints: (await this.getTotalPointsAway())[index],
-        totalGames: (await this.getTotalGamesAway())[index],
-        totalVictories: (await this.getVictoriesAway())[index],
-        totalDraws: (await this.getDrawsAway())[index],
-        totalLosses: (await this.getLossesAway())[index],
-        goalsFavor: (await this.getGoalsFavorAway())[index],
-        goalsOwn: (await this.getGoalsOwnAway())[index],
-        goalsBalance: (await this.getGoalsBalanceAway())[index],
-        efficiency: (await this.getEfficiencyAway())[index].toFixed(2),
+        totalPoints: (await this.findTotalPointsAway())[index],
+        totalGames: (await this.findTotalGamesAway())[index],
+        totalVictories: (await this.findVictoriesAway())[index],
+        totalDraws: (await this.findDrawsAway())[index],
+        totalLosses: (await this.findLossesAway())[index],
+        goalsFavor: (await this.findGoalsFavorAway())[index],
+        goalsOwn: (await this.findGoalsOwnAway())[index],
+        goalsBalance: (await this.findGoalsBalanceAway())[index],
+        efficiency: (await this.findEfficiencyAway())[index].toFixed(2),
       })),
     );
-    return awayLeaderboard;
+    return leaderboard;
   }
 
   // O resultado deverá ser ordenado sempre de forma decrescente, levando em consideração a quantidade de pontos que o time acumulou. Em caso de empate no Total de Pontos, você deve levar em consideração os seguintes critérios para desempate:
@@ -137,12 +137,12 @@ export default class AwayLeaderboardService {
   // 1º Total de Vitórias;
   // 2º Saldo de gols;
   // 3º Gols a favor;
-  public async getAwayLeaderboard(): Promise<ILeaderboard[]> {
-    const unsortedAwayLeaderboard = await this.getUnsortedLeaderboardAway();
-    const awayLeaderboard = unsortedAwayLeaderboard.sort((a, b) => b.totalPoints - a.totalPoints
+  public async findAwayLeaderboard(): Promise<ILeaderboard[]> {
+    const leaderboardUnsorted = await this.findLeaderboardAwayUnsorted();
+    const leaderboard = leaderboardUnsorted.sort((a, b) => b.totalPoints - a.totalPoints
       || b.totalVictories - a.totalVictories
       || b.goalsBalance - a.goalsBalance
       || b.goalsFavor - a.goalsFavor);
-    return awayLeaderboard as unknown as ILeaderboard[];
+    return leaderboard as unknown as ILeaderboard[];
   }
 }

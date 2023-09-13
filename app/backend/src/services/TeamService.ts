@@ -20,7 +20,7 @@ export default class TeamService {
   //   return { status: 'SUCCESSFUL', data: newTeam };
   // }
 
-  public async getAllTeams() : Promise<ServiceResponse<ITeam[]>> {
+  public async findAllTeams() : Promise<ServiceResponse<ITeam[]>> {
     const teams = await this.teamModel.findAll();
     return { status: 'SUCCESSFUL', data: teams };
   }

@@ -10,19 +10,19 @@ export default class HomeLeaderboardService {
     private model = MatchModelSequelize,
   ) {}
 
-  public async getAllTeams() {
+  public async findAllTeams() {
     const teams = await this.teamModel.findAll();
     return teams;
   }
 
-  public async getAllFinishedMatches() {
+  public async findAllFinishedMatches() {
     const matches = await this.model.findAll({ where: { inProgress: false } });
     return matches;
   }
 
-  public async getMatchesHome() {
-    const teams = await this.getAllTeams();
-    const matches = await this.getAllFinishedMatches();
+  public async findMatchesHome() {
+    const teams = await this.findAllTeams();
+    const matches = await this.findAllFinishedMatches();
     const teamsHomeMatches = teams.map((team) => {
       const homeMatches = matches.filter((match) => match.homeTeamId === team.id);
       return homeMatches;
@@ -30,14 +30,14 @@ export default class HomeLeaderboardService {
     return teamsHomeMatches;
   }
 
-  public async getTotalGamesHome() {
-    const homeMatches = await this.getMatchesHome();
+  public async findTotalGamesHome() {
+    const homeMatches = await this.findMatchesHome();
     const totalHomeGames = homeMatches.map((match) => match.length);
     return totalHomeGames;
   }
 
-  public async getVictoriesHome() {
-    const homeMatches = await this.getMatchesHome();
+  public async findVictoriesHome() {
+    const homeMatches = await this.findMatchesHome();
     const victories = homeMatches.map((match) => {
       const victory = match.filter((game) => game.homeTeamGoals > game.awayTeamGoals);
       return victory.length;
@@ -45,8 +45,8 @@ export default class HomeLeaderboardService {
     return victories;
   }
 
-  public async getDrawsHome() {
-    const homeMatches = await this.getMatchesHome();
+  public async findDrawsHome() {
+    const homeMatches = await this.findMatchesHome();
     const draws = homeMatches.map((match) => {
       const draw = match.filter((game) => game.homeTeamGoals === game.awayTeamGoals);
       return draw.length;
@@ -54,8 +54,8 @@ export default class HomeLeaderboardService {
     return draws;
   }
 
-  public async getLossesHome() {
-    const homeMatches = await this.getMatchesHome();
+  public async findLossesHome() {
+    const homeMatches = await this.findMatchesHome();
     const losses = homeMatches.map((match) => {
       const loss = match.filter((game) => game.homeTeamGoals < game.awayTeamGoals);
       return loss.length;
@@ -67,15 +67,15 @@ export default class HomeLeaderboardService {
   //   O time vitorioso: marcará +3 pontos;
   //   O time perdedor: marcará 0 pontos;
   //   Em caso de empate: ambos os times marcam +1 ponto.
-  public async getTotalPointsHome() {
-    const victories = await this.getVictoriesHome();
-    const drawsPoints = await this.getDrawsHome();
+  public async findTotalPointsHome() {
+    const victories = await this.findVictoriesHome();
+    const drawsPoints = await this.findDrawsHome();
     const totalPoints = victories.map((victory, index) => (victory * 3) + drawsPoints[index]);
     return totalPoints;
   }
 
-  public async getGoalsFavorHome() {
-    const homeMatches = await this.getMatchesHome();
+  public async findGoalsFavorHome() {
+    const homeMatches = await this.findMatchesHome();
     const goalsFavor = homeMatches.map((match) => {
       const goals = match.map((game) => game.homeTeamGoals);
       const sum = goals.reduce((a, b) => a + b, 0);
@@ -84,8 +84,8 @@ export default class HomeLeaderboardService {
     return goalsFavor;
   }
 
-  public async getGoalsOwnHome() {
-    const homeMatches = await this.getMatchesHome();
+  public async findGoalsOwnHome() {
+    const homeMatches = await this.findMatchesHome();
     const goalsOwn = homeMatches.map((match) => {
       const goals = match.map((game) => game.awayTeamGoals);
       const sum = goals.reduce((a, b) => a + b, 0);
@@ -97,9 +97,9 @@ export default class HomeLeaderboardService {
   // Para calcular Saldo de Gols use a seguinte fórmula: GP - GC, onde:
   // GP: Gols marcados a favor;
   // GC: Gols sofridos.
-  public async getGoalsBalanceHome() {
-    const goalsFavor = await this.getGoalsFavorHome();
-    const goalsOwn = await this.getGoalsOwnHome();
+  public async findGoalsBalanceHome() {
+    const goalsFavor = await this.findGoalsFavorHome();
+    const goalsOwn = await this.findGoalsOwnHome();
     const goalsBalance = goalsFavor.map((goal, index) => goal - goalsOwn[index]);
     return goalsBalance;
   }
@@ -108,32 +108,32 @@ export default class HomeLeaderboardService {
   // P: Total de Pontos;
   // J: Total de Jogos.
   // Obs.: O seu resultado deverá ser limitado a duas casas decimais.
-  public async getEfficiencyHome() {
-    const totalPoints = await this.getTotalPointsHome();
-    const totalHomeGames = await this.getTotalGamesHome();
+  public async findEfficiencyHome() {
+    const totalPoints = await this.findTotalPointsHome();
+    const totalHomeGames = await this.findTotalGamesHome();
     const efficiency = totalPoints
       .map((point, index) => ((point / (totalHomeGames[index] * 3)) * 100));
     return efficiency;
   }
 
-  public async getUnsortedLeaderboardHome() {
-    const teams = await this.getAllTeams();
+  public async findLeaderboardHomeUnsorted() {
+    const teams = await this.findAllTeams();
 
-    const homeLeaderboard = await Promise.all(
+    const leaderboard = await Promise.all(
       teams.map(async (team, index) => ({
         name: team.teamName,
-        totalPoints: (await this.getTotalPointsHome())[index],
-        totalGames: (await this.getTotalGamesHome())[index],
-        totalVictories: (await this.getVictoriesHome())[index],
-        totalDraws: (await this.getDrawsHome())[index],
-        totalLosses: (await this.getLossesHome())[index],
-        goalsFavor: (await this.getGoalsFavorHome())[index],
-        goalsOwn: (await this.getGoalsOwnHome())[index],
-        goalsBalance: (await this.getGoalsBalanceHome())[index],
-        efficiency: (await this.getEfficiencyHome())[index].toFixed(2),
+        totalPoints: (await this.findTotalPointsHome())[index],
+        totalGames: (await this.findTotalGamesHome())[index],
+        totalVictories: (await this.findVictoriesHome())[index],
+        totalDraws: (await this.findDrawsHome())[index],
+        totalLosses: (await this.findLossesHome())[index],
+        goalsFavor: (await this.findGoalsFavorHome())[index],
+        goalsOwn: (await this.findGoalsOwnHome())[index],
+        goalsBalance: (await this.findGoalsBalanceHome())[index],
+        efficiency: (await this.findEfficiencyHome())[index].toFixed(2),
       })),
     );
-    return homeLeaderboard;
+    return leaderboard;
   }
 
   // O resultado deverá ser ordenado sempre de forma decrescente, levando em consideração a quantidade de pontos que o time acumulou. Em caso de empate no Total de Pontos, você deve levar em consideração os seguintes critérios para desempate:
@@ -141,12 +141,12 @@ export default class HomeLeaderboardService {
   // 1º Total de Vitórias;
   // 2º Saldo de gols;
   // 3º Gols a favor;
-  public async getHomeLeaderboard(): Promise<ILeaderboard[]> {
-    const unsortedHomeLeaderboard = await this.getUnsortedLeaderboardHome();
-    const homeLeaderboard = unsortedHomeLeaderboard.sort((a, b) => b.totalPoints - a.totalPoints
+  public async findHomeLeaderboard(): Promise<ILeaderboard[]> {
+    const unsortedleaderboard = await this.findLeaderboardHomeUnsorted();
+    const leaderboard = unsortedleaderboard.sort((a, b) => b.totalPoints - a.totalPoints
       || b.totalVictories - a.totalVictories
       || b.goalsBalance - a.goalsBalance
       || b.goalsFavor - a.goalsFavor);
-    return homeLeaderboard as unknown as ILeaderboard[];
+    return leaderboard as unknown as ILeaderboard[];
   }
 }
