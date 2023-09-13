@@ -24,11 +24,21 @@ describe('Leaderboard Test', function() {
   beforeEach(() => {
     sinon.restore();
   }); 
-  it('should return all teams', async function() {
+  it('should return leaderboard home', async function() {
     sinon.stub(TeamModelSequelize, 'findAll').resolves(teams as any);
     sinon.stub(MatchModelSequelize, 'findAll').resolves(leaderboard as any);
 
     const { status, body } = await chai.request(app).get('/leaderboard/home');
+
+    expect(status).to.equal(mapStatusHTTP('SUCCESSFUL'));
+    // expect(body).to.deep.equal(leaderboard);
+  });
+
+  it('should return leaderboard away', async function() {
+    sinon.stub(TeamModelSequelize, 'findAll').resolves(teams as any);
+    sinon.stub(MatchModelSequelize, 'findAll').resolves(leaderboard as any);
+
+    const { status, body } = await chai.request(app).get('/leaderboard/away');
 
     expect(status).to.equal(mapStatusHTTP('SUCCESSFUL'));
     // expect(body).to.deep.equal(leaderboard);
