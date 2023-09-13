@@ -33,7 +33,7 @@ describe('Users Test', function() {
       password: 'secret_admin',
     });
 
-    expect(status).to.equal(200);
+    expect(status).to.equal(mapStatusHTTP('SUCCESSFUL'));
     // expect(body).to.deep.equal(users);
   });
 
@@ -45,7 +45,7 @@ describe('Users Test', function() {
       password: 'secret_admin',
     });
 
-    expect(status).to.equal(401);
+    expect(status).to.equal(mapStatusHTTP('UNAUTHORIZED'));
     // expect(body).to.deep.equal(users);
   });
 
@@ -57,7 +57,7 @@ describe('Users Test', function() {
       password: 'dodozinha',
     });
 
-    expect(status).to.equal(401);
+    expect(status).to.equal(mapStatusHTTP('UNAUTHORIZED'));
     // expect(body).to.deep.equal(users);
   });
 
@@ -71,7 +71,7 @@ describe('Users Test', function() {
       password: 'sec',
     });
 
-    expect(status).to.equal(401);
+    expect(status).to.equal(mapStatusHTTP('UNAUTHORIZED'));
     // expect(body).to.deep.equal(users);
   });
 
@@ -85,7 +85,7 @@ describe('Users Test', function() {
       password: 'secret_admin',
     });
 
-    expect(status).to.equal(400);
+    expect(status).to.equal(mapStatusHTTP('INVALID_DATA'));
     // expect(body).to.deep.equal(users);
   });
 
