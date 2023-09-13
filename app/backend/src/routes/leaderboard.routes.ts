@@ -14,9 +14,9 @@ router.get(
   '/away',
   (req: Request, res: Response) => leaderboardController.findAwayLeaderboard(req, res),
 );
-router.get(
-  '/',
-  (req: Request, res: Response) => leaderboardController.findLeaderboard(req, res),
-);
+// router.get(
+//   '/',
+//   (req: Request, res: Response) => leaderboardController.findLeaderboard(req, res),
+// );
 
 export default router;

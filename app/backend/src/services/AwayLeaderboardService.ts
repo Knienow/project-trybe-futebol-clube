@@ -1,12 +1,6 @@
-// import { ITeamModel } from '../Interfaces/ITeamModel';
-// import { IMatchModel } from '../Interfaces/IMatchModel';
-// import MatchModel from '../models/MatchModel';
-// import TeamModel from '../models/TeamModel';
 import ILeaderboard from '../Interfaces/ILeaderboard';
 import TeamModelSequelize from '../database/models/TeamModelSequelize';
 import MatchModelSequelize from '../database/models/MatchModelSequelize';
-// import IMatch from '../Interfaces/IMatch';
-// import ITeam from '../Interfaces/ITeam';
 
 export default class AwayLeaderboardService {
   constructor(
@@ -148,8 +142,7 @@ export default class AwayLeaderboardService {
     const awayLeaderboard = unsortedAwayLeaderboard.sort((a, b) => b.totalPoints - a.totalPoints
       || b.totalVictories - a.totalVictories
       || b.goalsBalance - a.goalsBalance
-      || b.goalsFavor - a.goalsFavor
-      || b.goalsOwn - a.goalsOwn);
+      || b.goalsFavor - a.goalsFavor);
     return awayLeaderboard as unknown as ILeaderboard[];
   }
 }

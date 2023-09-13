@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcryptjs';
 import UserModel from '../models/UserModel';
 import ILogin from '../Interfaces/ILogin';
-import { IUser, IUserResponse } from '../Interfaces/IUser';
+// import { IUser, IUserResponse } from '../Interfaces/IUser';
+import { IUser } from '../Interfaces/IUser';
 import { IUserModel } from '../Interfaces/IUserModel';
 import { IToken } from '../Interfaces/IToken';
 import JWT from '../utils/JWT';
@@ -16,21 +17,21 @@ export default class UserService {
     // private sequelizeModel = UserModelSequelize,
   ) { }
 
-  public async findAll(): Promise<ServiceResponse<IUserResponse[]>> {
-    const allUsers = await this.userModel.findAll();
-    const usersReturn = allUsers.map(
-      ({ id, username, role, email }) => ({ id, username, role, email }),
-    );
-    return { status: 'SUCCESSFUL', data: usersReturn };
-  }
+  // public async findAll(): Promise<ServiceResponse<IUserResponse[]>> {
+  //   const allUsers = await this.userModel.findAll();
+  //   const usersReturn = allUsers.map(
+  //     ({ id, username, role, email }) => ({ id, username, role, email }),
+  //   );
+  //   return { status: 'SUCCESSFUL', data: usersReturn };
+  // }
 
-  public async getUserById(id: number): Promise<ServiceResponse<IUser>> {
-    const user = await this.userModel.findById(id);
-    if (!user) return { status: 'NOT_FOUND', data: { message: 'User not found' } };
-    // const { username, role, email } = user as IUser;
+  // public async getUserById(id: number): Promise<ServiceResponse<IUser>> {
+  //   const user = await this.userModel.findById(id);
+  //   if (!user) return { status: 'NOT_FOUND', data: { message: 'User not found' } };
+  //   // const { username, role, email } = user as IUser;
 
-    return { status: 'SUCCESSFUL', data: user };
-  }
+  //   return { status: 'SUCCESSFUL', data: user };
+  // }
 
   public async login(data: ILogin): Promise<ServiceResponse<ServiceMessage | IToken>> {
     const user = await this.userModel.findByEmail(data.email);

@@ -12,6 +12,7 @@ export default class MatchController {
     const { inProgress } = req.query;
     console.log('teste inProgress controller Match', inProgress);
     console.log('teste true', inProgress === 'true');
+
     if (!inProgress) {
       console.log('teste bug');
       const serviceResponse = await this.matchService.getAllMatches();
